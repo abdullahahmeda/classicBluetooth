@@ -4,8 +4,22 @@ import RNBluetoothClassic from 'react-native-bluetooth-classic'
 import Button from '../components/button'
 import Container from '../components/container'
 import Text from '../components/text'
-import Icon from 'react-native-vector-icons/MaterialIcons'
+import MaterialIcon from 'react-native-vector-icons/MaterialIcons'
+import MaterialCommunityIcon from 'react-native-vector-icons/MaterialCommunityIcons'
 import Layout from '../components/layout'
+
+const signals = {
+  elbowForward: 'F',
+  elbowBackward: 'B',
+  shoulderUp: 'U',
+  shoulderDown: 'D',
+  gripperOpen: 'O',
+  gripperClose: 'C',
+  moveForward: 'W',
+  moveBackward: 'S',
+  moveRight: 'G',
+  moveLeft: 'A'
+}
 
 const Home = ({ navigation }) => {
   const [connectedDevice, setConnectedDevice] = useState(null)
@@ -50,18 +64,36 @@ const Home = ({ navigation }) => {
           <Button onPress={() => navigation.navigate('الأجهزة')}><Text style={{ textAlign: 'center', color: '#3f3f3f', fontFamily: 'ReadexPro-SemiBold' }}>{connectedDevice ? connectedDevice.name : 'غير متصل'}</Text></Button>
           {!connectedDevice && <Text style={{ fontFamily: 'ReadexPro-Bold', marginTop: 10, color: '#000' }}>يجب الاتصال بالجهاز أولاً للاستمرار.</Text>}
           {connectedDevice && (
-            <View style={{ ...styles.row, marginTop: 20, alignItems: 'center' }}>
-              <View style={styles.leftControls}>
-                <TouchableOpacity style={styles.button} onPress={() => sendSignal('UP')}><Icon name='keyboard-arrow-up' style={styles.buttonIcon} size={30} color='#5584AC' /></TouchableOpacity>
-                <View style={{ flexDirection: 'row' }}>
-                  <TouchableOpacity style={{ ...styles.button, marginRight: 15 }} onPress={() => sendSignal('LEFT')}><Icon name='keyboard-arrow-left' style={styles.buttonIcon} size={30} color='#5584AC' /></TouchableOpacity>
-                  <TouchableOpacity style={{ ...styles.button, marginLeft: 15 }} onPress={() => sendSignal('RIGHT')}><Icon name='keyboard-arrow-right' style={styles.buttonIcon} size={30} color='#5584AC' /></TouchableOpacity>
+            <View style={{ flex: 1 }}>
+              <View style={{ ...styles.row, marginTop: 20, alignItems: 'center' }}>
+                <View style={styles.leftControls}>
+                  <Text style={{ marginBottom: 5 }}>Elbow</Text>
+                  <TouchableOpacity style={[styles.button, { marginBottom: 5 }]} onPress={() => sendSignal(signals.elbowForward)}><MaterialIcon name='keyboard-arrow-up' style={styles.buttonMaterialIcon} size={30} color='#5584AC' /></TouchableOpacity>
+                  <TouchableOpacity style={[styles.button, { marginTop: 5 }]} onPress={() => sendSignal(signals.elbowBackward)}><MaterialIcon name='keyboard-arrow-down' style={styles.buttonMaterialIcon} size={30} color='#5584AC' /></TouchableOpacity>
                 </View>
-                <TouchableOpacity style={styles.button} onPress={() => sendSignal('DOWN')}><Icon name='keyboard-arrow-down' style={styles.buttonIcon} size={30} color='#5584AC' /></TouchableOpacity>
+                <View style={styles.rightControls}>
+                  <Text style={{ marginBottom: 5 }}>Shoulder</Text>
+                  <TouchableOpacity style={{ ...styles.button, marginBottom: 5 }} onPress={() => sendSignal(signals.shoulderUp)}><MaterialIcon name='arrow-upward' style={styles.buttonMaterialIcon} size={30} color='#5584AC' /></TouchableOpacity>
+                  <TouchableOpacity style={{ ...styles.button, marginTop: 5 }} onPress={() => sendSignal(signals.shoulderDown)}><MaterialIcon name='arrow-downward' style={styles.buttonMaterialIcon} size={30} color='#5584AC' /></TouchableOpacity>
+                </View>
               </View>
-              <View style={styles.rightControls}>
-                <TouchableOpacity style={{ ...styles.button, marginBottom: 5 }} onPress={() => sendSignal('TOP')}><Icon name='arrow-upward' style={styles.buttonIcon} size={30} color='#5584AC' /></TouchableOpacity>
-                <TouchableOpacity style={{ ...styles.button, marginTop: 5 }} onPress={() => sendSignal('BOTTOM')}><Icon name='arrow-downward' style={styles.buttonIcon} size={30} color='#5584AC' /></TouchableOpacity>
+              <View style={{ marginTop: 10 }}>
+                <Text style={{ marginBottom: 5, textAlign: 'center' }}>Gripper</Text>
+                <View style={[styles.row, { justifyContent: 'center' }]}>
+                  <TouchableOpacity style={{ ...styles.button, marginBottom: 5, marginRight: 5 }} onPress={() => sendSignal(signals.gripperOpen)}><MaterialCommunityIcon name='arrow-expand-horizontal' style={styles.buttonMaterialIcon} size={30} color='#5584AC' /></TouchableOpacity>
+                  <TouchableOpacity style={{ ...styles.button, marginBottom: 5, marginLeft: 5 }} onPress={() => sendSignal(signals.gripperClose)}><MaterialCommunityIcon name='arrow-collapse-horizontal' style={styles.buttonMaterialIcon} size={30} color='#5584AC' /></TouchableOpacity>
+                </View>
+              </View>
+              <View style={{ marginTop: 10 }}>
+                <Text style={{ marginBottom: 5, textAlign: 'center' }}>Move</Text>
+                <View style={[{ alignItems: 'center' }]}>
+                  <TouchableOpacity style={{ ...styles.button, marginBottom: 5, marginRight: 5 }} onPress={() => sendSignal(signals.moveForward)}><MaterialIcon name='keyboard-arrow-up' style={styles.buttonMaterialIcon} size={30} color='#5584AC' /></TouchableOpacity>
+                  <View style={[styles.row]}>
+                    <TouchableOpacity style={{ ...styles.button, marginBottom: 5, marginRight: 20 }} onPress={() => sendSignal(signals.moveLeft)}><MaterialIcon name='keyboard-arrow-left' style={styles.buttonMaterialIcon} size={30} color='#5584AC' /></TouchableOpacity>
+                    <TouchableOpacity style={{ ...styles.button, marginBottom: 5, marginLeft: 20 }} onPress={() => sendSignal(signals.moveRight)}><MaterialIcon name='keyboard-arrow-right' style={styles.buttonMaterialIcon} size={30} color='#5584AC' /></TouchableOpacity>
+                  </View>
+                  <TouchableOpacity style={{ ...styles.button, marginBottom: 5, marginLeft: 5 }} onPress={() => sendSignal(signals.moveBackward)}><MaterialIcon name='keyboard-arrow-down' style={styles.buttonMaterialIcon} size={30} color='#5584AC' /></TouchableOpacity>
+                </View>
               </View>
             </View>
           )}
@@ -73,12 +105,13 @@ const Home = ({ navigation }) => {
 
 const styles = StyleSheet.create({
   leftControls: {
-    flex: 2,
-    marginLeft: 20,
+    flex: 1,
+    // marginLeft: 20,
     alignItems: 'center'
   },
   rightControls: {
-    flex: 1
+    flex: 1,
+    alignItems: 'center'
   },
   row: {
     // flex: 1,
@@ -91,7 +124,7 @@ const styles = StyleSheet.create({
     borderColor: '#ccc',
     borderWidth: 0.5
   },
-  buttonIcon: {
+  buttonMaterialIcon: {
     lineHeight: 40,
     textAlign: 'center'
   }
