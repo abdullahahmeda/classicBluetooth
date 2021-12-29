@@ -1,20 +1,18 @@
-import React, { useEffect, useState } from 'react'
-import { FlatList, StyleSheet, ToastAndroid, TouchableOpacity, View } from 'react-native'
-import RNBluetoothClassic from 'react-native-bluetooth-classic'
-import Button from '../components/button'
+import React from 'react'
+import { FlatList, View } from 'react-native'
 import Container from '../components/container'
 import Text from '../components/text'
 import Icon from 'react-native-vector-icons/Ionicons'
 import Layout from '../components/layout'
 
 const team = [
-  'محمد فياض',
   'أحمد حسن',
   'أحمد مهران',
   'هيثم مجدي',
   'زياد خالد',
   'أحمد السيد',
   'أحمد محمد',
+  'محمد فياض',
   'عبدالله أحمد'
 ]
 
