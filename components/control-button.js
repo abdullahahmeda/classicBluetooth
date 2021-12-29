@@ -5,7 +5,7 @@ export default function ControlButton ({ children, signal, moveStopSignal, sendS
   let timer = null
   const handlePressIn = () => {
     sendSignal(signal)
-    timer = setTimeout(handlePressIn, 150)
+    timer = setTimeout(handlePressIn, 10)
   }
 
   const handlePressOut = () => {
